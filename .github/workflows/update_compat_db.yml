@@ -7,7 +7,7 @@ on:
 jobs:
   update_compat_db:
     runs-on: windows-latest
-    if: github.repository == 'Vita3K/compatibility'
+    # if: github.repository == 'Vita3K/compatibility'
 
     steps:
     - uses: actions/checkout@v4
@@ -77,16 +77,25 @@ jobs:
         $issue_id_updated = $app_updated.number
         Add-Content -Path $env:GITHUB_ENV -Value "issue_id_updated=$issue_id_updated"
 
+    - name: Zip compatibility database
+      run: Compress-Archive -Path app_compat_db.xml -DestinationPath app_compat_db.xml.zip
+
+    - name: Prepare files for release
+      run: |
+        mkdir compat_dbs
+        cp app_compat_db.xml compat_dbs/
+        cp app_compat_db.xml.zip compat_dbs/
+
     - name: Upload compatibility database
       run: |
         Invoke-WebRequest "https://github.com/tcnksm/ghr/releases/download/v0.16.2/ghr_v0.16.2_windows_amd64.zip" -OutFile ghr.zip
         Expand-Archive -Force -Path ghr.zip -DestinationPath '.'
-        $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/Vita3K/compatibility/releases" -Headers @{Authorization = "Bearer $env:GITHUB_TOKEN"}
+        $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/nishinji/compatibility/releases" -Headers @{Authorization = "Bearer $env:GITHUB_TOKEN"}
         if ($releases -ne $null) {
             foreach ($release in $releases) {
                 Invoke-RestMethod -Uri $release.url -Method DELETE -Headers @{Authorization = "Bearer $env:GITHUB_TOKEN"}
             }
         }
-        .\ghr_v0.16.2_windows_amd64\ghr -u Vita3K -r compatibility -n "Automatic CI generated database" -b "Corresponding issue: #${{ env.issue_id_updated }} for App: ${{ env.app_updated_title }}`r`nUpdated at: ${{ env.db_updated_at }}" -t "${{ secrets.GITHUB_TOKEN }}" compat_db app_compat_db.xml
+        .\ghr_v0.16.2_windows_amd64\ghr -u nishinji -r compatibility -n "Automatic CI generated database" -b "Corresponding issue: #${{ env.issue_id_updated }} for App: ${{ env.app_updated_title }}`r`nUpdated at: ${{ env.db_updated_at }}" -t "${{ secrets.GITHUB_TOKEN }}" compat_dbs/
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
