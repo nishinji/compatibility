@@ -11,6 +11,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Generate compatibility database xml file
       run: |
         $headers = @{
