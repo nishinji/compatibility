@@ -1,7 +1,34 @@
-# compatibility
-#### [Commercial game compatibility database for Vita3K.](https://github.com/Vita3K/compatibility/issues)
 
----
+# compatibility
+
+<h2 align="center">
+<a href="https://github.com/Vita3K/compatibility/labels/Nothing">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3ANothing&style=flat-square&color=FF0000&label=Nothing"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/labels/Bootable">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3ABootable&style=flat-square&color=purple&label=Bootable"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/labels/Intro">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3AIntro&style=flat-square&color=C71585&label=Intro"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/labels/Menu">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3AMenu&style=flat-square&color=1D76DB&label=Menu"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/labels/Ingame%20-">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3A%22Ingame%20-%22&style=flat-square&color=e08a1e&label=Ingame%20-"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/labels/Ingame%20+">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3A%22Ingame%20%2B%22&style=flat-square&color=FBCA04&label=Ingame%20%2B"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/labels/Playable">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen%20label%3APlayable&style=flat-square&color=0E8A16&label=Playable"/>
+</a>
+<a href="https://github.com/Vita3K/compatibility/issues">
+    <img src="https://img.shields.io/github/issues-search/Vita3K/compatibility?query=is%3Aopen&style=flat-square&color=blue&label=All"/>
+</a>
+</h2>
+
+## Commercial game compatibility database for Vita3K.
 
 The [Compatibility web page](https://vita3k.org/compatibility.html) fetches data from this repo.
 
