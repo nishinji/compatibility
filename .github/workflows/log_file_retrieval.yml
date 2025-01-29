@@ -2,44 +2,67 @@ name: Log File Retrieval
 
 on:
   schedule:
-  - cron: '0 0 1 * *' # Runs at midnight on the first day of each month
+    - cron: '0 0 1 * *' # Runs at midnight on the first day of each month
   workflow_dispatch:
 
 jobs:
   retrieve_logs:
     runs-on: ubuntu-latest
-    if: github.repository == 'Vita3K/compatibility'
+    #if: github.repository == 'Vita3K/compatibility'
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        pip install PyGithub
+      - name: Install dependencies
+        run: |
+          pip install PyGithub
 
-    - name: Retrieve log files
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        python .github/workflows/script/collect_vita3k_logs.py
+      - name: Retrieve log files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python .github/workflows/script/collect_vita3k_logs.py
 
-    - name: Zip compatibility database
-      run: |
-        7z a -mx=9 logs.7z logs/
+      - name: Zip compatibility database
+        run: |
+          7z a -mx=9 logs.7z logs/
 
-    - name: Upload log files
-      uses: actions/upload-artifact@v4
-      with:
-        name: logs-archive-zip
-        path: logs/
+      - name: Upload log files
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-archive-zip
+          path: logs/
 
-    - name: Upload 7zipped log files
-      uses: actions/upload-artifact@v4
-      with:
-        name: logs-archive-7z
-        path: logs.7z
+      - name: Upload 7zipped log files
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-archive-7z
+          path: logs.7z
+
+      - name: Push logs to Vita3K_Logs repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUSH_REPO_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Get the current date (YYYY-MM-DD format)
+          DATE=$(date +"%Y-%m-%d")
+
+          # Clone the Vita3K_Logs repository
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/nishinji/Vita3K_Logs.git target-repo
+          cd target-repo
+
+          # Update the logs folder
+          rm -rf logs
+          cp -r ../logs ./
+
+          # Commit and push changes
+          git add logs
+          git commit -m "Update log files - ${DATE}"
+          git push origin main
